@@ -185,14 +185,18 @@ func _physics_process(_delta) -> void:
 
 func set_hdr(index, hdr_path) -> bool:
 	var hdr_image : Image = Image.new()
-	if hdr_image.load(hdr_path) != OK:
+	var file_existence_checker := File.new()
+	if file_existence_checker.file_exists(hdr_path):
+		if hdr_image.load(hdr_path) != OK:
+			return false
+		var hdr : ImageTexture = ImageTexture.new()
+		hdr.storage = ImageTexture.STORAGE_COMPRESS_LOSSLESS
+		hdr.create_from_image(hdr_image)
+		environment_textures[index].hdri = hdr
+		print(hdr.storage)
+		return true
+	else:
 		return false
-	var hdr : ImageTexture = ImageTexture.new()
-	hdr.storage = ImageTexture.STORAGE_COMPRESS_LOSSLESS
-	hdr.create_from_image(hdr_image)
-	environment_textures[index].hdri = hdr
-	print(hdr.storage)
-	return true
 
 func new_environment(index : int) -> void:
 	var new_environment : Dictionary
