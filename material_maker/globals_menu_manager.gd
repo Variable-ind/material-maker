@@ -122,13 +122,16 @@ func on_menu_about_to_show(menu_def, object, name : String, menu : PopupMenu) ->
 			var command = menu_def[i].command+"_is_disabled"
 			if object.has_method(command):
 				var is_disabled = object.call(command)
-				menu.set_item_disabled(item, is_disabled)
+				if item != -1:
+					menu.set_item_disabled(item, is_disabled)
 			if menu_def[i].has("mode"):
-				menu.set_item_disabled(item, menu_def[i].mode != mode)
+				if item != -1:
+					menu.set_item_disabled(item, menu_def[i].mode != mode)
 			if menu_def[i].has("toggle") and menu_def[i].toggle:
 				command = menu_def[i].command
 				var parameters = []
 				if menu_def[i].has("command_parameter"):
 					parameters.append(menu_def[i].command_parameter)
 				if object.has_method(command):
-					menu.set_item_checked(item, object.callv(command, parameters))
+					if item != -1:
+						menu.set_item_checked(item, object.callv(command, parameters))
