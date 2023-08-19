@@ -107,6 +107,8 @@ func set_tab_title(index, title) -> void:
 	$Tabs.set_tab_title(index, title)
 
 func get_current_tab_control() -> Node:
+	if current_tab == -1:
+		return null
 	return get_child(current_tab)
 
 func _on_Tabs_tab_changed(tab) -> void:
